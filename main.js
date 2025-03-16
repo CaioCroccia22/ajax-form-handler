@@ -19,7 +19,7 @@ $(document).ready(function(){
 
     $('#btn-buscar-cep').click(function() {
         const cep = $('#cep').val();
-        const endpoint = `https://viacep.com.br/ws/${cep}/json/`;
+        const endpoint = `https://viacep.com.br/ws/${cep}/json/resultado`;
         const botao = $(this);
 
         // this é o botão que foi clicado, ou seja #btn-buscar-cep
@@ -28,12 +28,32 @@ $(document).ready(function(){
         botao.find('span').removeClass('d-none');
 
         // parametro resposta é o retorno da requisição
-        $.ajax(endpoint).done(function(resposta) {
+
+        // $.ajax(endpoint).done(function(resposta) {
             // console.log(resposta);
-            const logradourou = resposta.logradouro;
-            const bairro = resposta.bairro;
-            const localidade = resposta.localidade;
-            const estado = resposta.uf;
+        //     const logradourou = resposta.logradouro;
+        //     const bairro = resposta.bairro;
+        //     const localidade = resposta.localidade;
+        //     const estado = resposta.uf;
+        //     const endereco = `${logradourou}, ${bairro}, ${localidade}, ${estado}`;
+        //     $('#endereco').val(endereco);
+
+        //     setTimeout(function(){
+        //         botao.find('i').removeClass('d-none');
+        //         botao.find('span').addClass('d-none');
+        //     }, 4000);
+        // })
+
+        fetch(endpoint).then(function(resposta){
+            console.log(resposta);
+            return resposta.json();
+        })
+        .then(function(json){
+            console.log(json);
+            const logradourou = json.logradouro;
+            const bairro = json.bairro;
+            const localidade = json.localidade;
+            const estado = json.uf;
             const endereco = `${logradourou}, ${bairro}, ${localidade}, ${estado}`;
             $('#endereco').val(endereco);
 
