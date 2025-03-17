@@ -19,7 +19,7 @@ $(document).ready(function(){
 
     $('#btn-buscar-cep').click(function() {
         const cep = $('#cep').val();
-        const endpoint = `https://viacep.com.br/ws/${cep}/json/resultado`;
+        const endpoint = `https://viacep.com.br/ws/${cep}/json`;
         const botao = $(this);
 
         // this é o botão que foi clicado, ou seja #btn-buscar-cep
@@ -56,12 +56,25 @@ $(document).ready(function(){
             const estado = json.uf;
             const endereco = `${logradourou}, ${bairro}, ${localidade}, ${estado}`;
             $('#endereco').val(endereco);
-
+        })
+        .catch(error => {
+            alert('Ocorreu um erro ao buscar o CEP');
+        })
+        // Finally é executado sempre, independente do resultado da requisição
+        .finally(function(){
             setTimeout(function(){
                 botao.find('i').removeClass('d-none');
                 botao.find('span').addClass('d-none');
             }, 4000);
         })
+    })
+
+    $('#formulario-pedido').submit(function(evento){
+        evento.preventDefault();
+        
+        if ($('#nome').val().length === 0){
+            throw new Error('Digite o nome');
+        }
     })
 })
 
